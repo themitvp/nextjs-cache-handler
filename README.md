@@ -158,6 +158,24 @@ const redisCacheHandler = createRedisHandler({
 
 **Note:** Redis Cluster support is currently experimental and may have limitations or unexpected bugs. Use it with caution.
 
+### Using ioredis
+
+If you prefer using `ioredis` instead of `@redis/client`, you can use the `ioRedisAdapter` helper.
+
+```js
+import Redis from "ioredis";
+import createRedisHandler from "@fortedigital/nextjs-cache-handler/redis-strings";
+import { ioRedisAdapter } from "@fortedigital/nextjs-cache-handler/helpers/ioRedisAdapter";
+
+const client = new Redis(process.env.REDIS_URL);
+const redisClient = ioRedisAdapter(client);
+
+const redisHandler = createRedisHandler({
+  client: redisClient,
+  keyPrefix: "my-app:",
+});
+```
+
 ---
 
 ### `local-lru`
