@@ -45,7 +45,9 @@ export function ioredisAdapter(client: Redis): RedisClientType {
       if (prop === "hDel") {
         return async (key: string, fields: string | string[]) => {
           const args = Array.isArray(fields) ? fields : [fields];
-          if (args.length === 0) return 0;
+          if (args.length === 0) {
+            return 0;
+          }
           return target.hdel(key, ...args);
         };
       }
@@ -53,7 +55,9 @@ export function ioredisAdapter(client: Redis): RedisClientType {
       if (prop === "unlink") {
         return async (keys: string | string[]) => {
           const args = Array.isArray(keys) ? keys : [keys];
-          if (args.length === 0) return 0;
+          if (args.length === 0) {
+            return 0;
+          }
           return target.unlink(...args);
         };
       }
@@ -93,7 +97,9 @@ export function ioredisAdapter(client: Redis): RedisClientType {
       if (prop === "hmGet") {
         return async (key: string, fields: string | string[]) => {
           const args = Array.isArray(fields) ? fields : [fields];
-          if (args.length === 0) return [];
+          if (args.length === 0) {
+            return [];
+          }
           return target.hmget(key, ...args);
         };
       }
@@ -101,13 +107,19 @@ export function ioredisAdapter(client: Redis): RedisClientType {
       // Handle camelCase to lowercase mapping for other methods
       if (typeof prop === "string") {
         // Special case for expireAt -> expireat
-        if (prop === "expireAt") return target.expireat.bind(target);
+        if (prop === "expireAt") {
+          return target.expireat.bind(target);
+        }
 
         // hSet -> hset
-        if (prop === "hSet") return target.hset.bind(target);
+        if (prop === "hSet") {
+          return target.hset.bind(target);
+        }
 
         // hExists -> hexists
-        if (prop === "hExists") return target.hexists.bind(target);
+        if (prop === "hExists") {
+          return target.hexists.bind(target);
+        }
 
         // Default fallback to lowercase if exists
         const lowerProp = prop.toLowerCase();
